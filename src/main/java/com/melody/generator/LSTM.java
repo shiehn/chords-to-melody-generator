@@ -35,11 +35,11 @@ import java.util.Random;
 public class LSTM {
 
     public void run(String keyAndChords) throws Exception {
-        int lstmLayerSize = 100;                    //Number of units in each GravesLSTM layer
+        int lstmLayerSize = 140;                    //Number of units in each GravesLSTM layer
         int miniBatchSize = 32;             //Size of mini batch to use when  training
         int exampleLength = 355;//100 per row         //Length of each training example sequence to use. This could certainly be increased
         int tbpttLength = 355;                       //Length for truncated backpropagation through time. i.e., do parameter updates ever 50 characters
-        int numEpochs = 7;                            //Total number of training epochs
+        int numEpochs = 10;                            //Total number of training epochs
         int generateSamplesEveryNMinibatches = 50;  //How frequently to generate samples from the network? 1000 characters / 50 tbptt length: 20 parameter updates per minibatch
         int nSamplesToGenerate = 100;                    //Number of samples to generate after each training epoch
         int nCharactersToSample = 320;                //Length of each sample to generate
@@ -49,7 +49,7 @@ public class LSTM {
         Random rng = new Random(12345);
 
         //Save the model
-        File savedLocation = new File("TrainedModel.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File("TrainedModel_March5.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model
@@ -84,7 +84,7 @@ public class LSTM {
                         System.out.println(samples[j]);
 
                         playString = decoder.decodeMelody(validString);
-                        //chordString = decoder.decodeChords(validString);
+                        chordString = decoder.decodeChords(validString);
                         bassString = decoder.decodeBassline(validString);
 
                         System.out.println("GOOD: " + playString);
@@ -94,7 +94,7 @@ public class LSTM {
                         //playString = playString.replace("4", "5");
                         Player player = new Player();
 
-                        Pattern pattern = new Pattern("V0 I[Piano] " + playString + " V1 I[SYNTH_STRINGS_1] V1 I[SYNTH_BASS_2] " + bassString);
+                        Pattern pattern = new Pattern("V0 I[Piano] " + playString + " V1 I[Piano] " + chordString);
                         //player.play("V0 " + playString + " V1 " + chordString);
                         //player = null;
 
@@ -144,11 +144,11 @@ public class LSTM {
             net.init();
 
             //UI MONITORINGS STUFF
-            //UIServer uiServer = UIServer.getInstance();
-            //StatsStorage statsStorage = new InMemoryStatsStorage();
-            //uiServer.attach(statsStorage);
+            UIServer uiServer = UIServer.getInstance();
+            StatsStorage statsStorage = new InMemoryStatsStorage();
+            uiServer.attach(statsStorage);
 
-            IterationListener[] listeners = new IterationListener[]{new ScoreIterationListener(1)};
+            IterationListener[] listeners = new IterationListener[]{new ScoreIterationListener(1),new StatsListener(statsStorage)};
             net.setListeners(listeners);
 
 
@@ -186,9 +186,9 @@ public class LSTM {
                         int totalGood = 0;
 
                         for (int j = 0; j < samples.length; j++) {
-//                            System.out.println("----- Sample " + j + " -----");
-//                            System.out.println(samples[j]);
-//                            System.out.println();
+                            System.out.println("----- Sample " + j + " -----");
+                            System.out.println(samples[j]);
+                            System.out.println();
 
                             ChordMelodyDecoder decoder = new ChordMelodyDecoder();
                             String validString = decoder.extractValid(samples[j]);

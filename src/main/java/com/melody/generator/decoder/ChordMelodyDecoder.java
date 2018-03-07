@@ -192,41 +192,29 @@ public class ChordMelodyDecoder {
 
         for (Measure measure : measures) {
 
-            String prevNote = "";
-            String prevOctave = "";
-            int d = 1;
-
+            NoteDuration noteDuration = null;
             for (int i = 0; i < measure.getNotes().size(); i++) {
-                //get note name
-                String currentNote = getNoteName(measure.getNotes().get(i).substring(0, 2));
-                String currentOctave = measure.getNotes().get(i).substring(2, 3);
 
-                if (measure.getNotes().get(i).substring(3, 4).equalsIgnoreCase("0") || i == measure.getNotes().size() - 1) {
-
-                    //save the last noteDuration
-                    if (prevNote != "") {
-                        NoteDuration noteDuration = new NoteDuration();
-                        noteDuration.note = prevNote;
-                        noteDuration.octave = prevOctave;
-                        if (i == measure.getNotes().size() - 1) {
-                            d++;
-                        }
-                        noteDuration.duration = d;
-                        noteDurations.add(noteDuration);
-                    }
-
-                    prevNote = currentNote;
-                    prevOctave = currentOctave;
-                    d = 1;
+                if (measure.getNotes().get(i).substring(3, 4).equalsIgnoreCase("0") ) {
+                    noteDuration = new NoteDuration();
+                    noteDuration.note = getNoteName(measure.getNotes().get(i).substring(0, 2));
+                    noteDuration.octave = measure.getNotes().get(i).substring(2, 3);
+                    noteDuration.duration = 1;
+                    noteDurations.add(noteDuration);
                 } else if (measure.getNotes().get(i).substring(3, 4).equalsIgnoreCase("1")) {
-                    d++;
+                    noteDuration.duration = noteDuration.duration + 1;
                 }
             }
         }
 
         for (NoteDuration noteDuration : noteDurations) {
             String durationStr = extractDuration(noteDuration.duration);
-            jfugueString = jfugueString + noteDuration.note + noteDuration.octave + durationStr + " ";
+            String note = noteDuration.note;
+            String octave = noteDuration.octave;
+            if(note.equalsIgnoreCase("r")){
+                octave = "";
+            }
+            jfugueString = jfugueString + note + octave + durationStr + " ";
         }
 
         return jfugueString;

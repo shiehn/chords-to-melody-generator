@@ -39,6 +39,44 @@ public class ChordMelodyDecoderTest {
         Assert.assertTrue(expectedB.trim().equalsIgnoreCase(decoder.decodeMelody(validB).trim()));
     }
 
+    @Test
+    public void shouldProduceCorrectJFugeString(){
+
+        String input = "31^313*313*313*313*613*613*715*715*" +
+                "2140-2141-2040-2041-" +
+                "2040-2040-2040-2040-" +
+                "2040-2041-3150-3151-" +
+                "2040-2041-1140-1141+" +
+                "2140-3150-2140-2141-" +
+                "0000-0000-0000-0000-" +
+                "0000-0000-0000-0000-" +
+                "0000-0000-0000-0000+" +
+
+                "6150-5150-2140-2140-" +
+                "2141-2141-2140-2140-" +
+                "2140-2140-2140-2141-" +
+                "2140-2141-2141-2140+";
+
+
+        String expected = "b4i a#4i a#4s a#4s a#4s a#4s a#4i c5i a#4i a4i b4s c5s b4i rs rs rs rs rs rs rs rs rs rs rs rs " +
+                "f5s e5s b4s b4i. b4s b4s " +
+                "b4s b4s b4i " +
+                "b4i. b4s";
+        ChordMelodyDecoder decoder = new ChordMelodyDecoder();
+        String actual = decoder.decodeMelody(input);
+        System.out.println("ACTUAL:   " + actual);
+        System.out.println("EXPECTED: " + expected);
+
+        Assert.assertEquals(expected.trim(), decoder.decodeMelody(input).trim());
+    }
+
+    /*
+    @Test
+    31^313*313*313*313*613*613*715*715*2140-2141-2040-2041-2040-2040-2040-2040-2040-2041-3150-3151-2040-2041-1140-1141+2140-3150-2140-2141-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000+6150-5150-2140-2140-2141-2141-2140-2140-2140-2140-2140-2141-2140-2141-2141-2140+0000-0000-7240-7241-6240-6240-6240-6241-0000-0000-0000-0000-0000-0000-0000-0000#
+    */
+
+
+
     /*
 
     THE "roi" is NOT CORRECT .. please make a test for this one
