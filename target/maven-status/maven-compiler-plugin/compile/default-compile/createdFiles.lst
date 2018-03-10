@@ -30,6 +30,7 @@ org/staccato/UppercasePreprocessor.class
 org/jfugue/pattern/Pattern.class
 org/jfugue/midi/MidiDictionary$1.class
 org/jfugue/provider/KeyProviderFactory.class
+com/melody/generator/Config.class
 org/jfugue/provider/ChordProviderFactory.class
 org/jfugue/midi/MidiEventManager.class
 org/staccato/StaccatoUtil.class
@@ -78,6 +79,7 @@ org/staccato/PreprocessorFunction.class
 org/jfugue/realtime/RealtimeMidiParserListener$4.class
 org/jfugue/temporal/TemporalEventManager.class
 org/jfugue/midi/MidiDictionary$3.class
+com/melody/generator/decoder/PitchCorrection.class
 org/staccato/Instruction$LastIsValue.class
 org/jfugue/midi/MidiDictionary.class
 org/jfugue/provider/ChordProvider.class

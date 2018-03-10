@@ -41,10 +41,12 @@
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/realtime/ScheduledEvent.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/pattern/PatternProducer.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/midi/PatchProvider.java
+/signalsandsorcery/chords-to-melody-generator/src/main/java/com/melody/generator/decoder/PitchCorrection.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/provider/KeyProviderFactory.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/staccato/MicrotonePreprocessor.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/staccato/Instruction.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/staccato/SubparserFunction.java
+/signalsandsorcery/chords-to-melody-generator/src/main/java/com/melody/generator/Config.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/temporal/TemporalEvent.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/parser/ParserListener.java
 /signalsandsorcery/chords-to-melody-generator/src/main/java/org/jfugue/pattern/TrackTable.java

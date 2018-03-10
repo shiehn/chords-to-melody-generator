@@ -1,5 +1,6 @@
 package com.melody.generator.decoder;
 
+import com.melody.generator.Config;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -9,6 +10,13 @@ import java.util.List;
 public class ChordMelodyDecoder {
 
     public static String INVALID = "invalid";
+    private Config config;
+    private PitchCorrection pitchCorrection;
+
+    public ChordMelodyDecoder(Config config){
+        this.config = config;
+        this.pitchCorrection = new PitchCorrection();
+    }
 
     public String extractValid(String seq) {
         //"31*313*715*3150-3151-3151-3151-3151-3151-3151-3151-2140-2141-2141-2141-7140-7141-7141-7141"
@@ -119,63 +127,34 @@ public class ChordMelodyDecoder {
         }
 
         throw new RuntimeException("ERROR");
-       /*
-        ##### CHORD TYPES
-        0 | maj<br>
-            1 | min<br>
-            2 | dim<br>
-            3 | maj7<br>
-            4 | min7<br>
-            5 | dom7<br>
-            6 | min7b5<br>#### CHORD TYPE
-        */
     }
 
-    public String decodeMelody(String encoded) {
+    public String decodeMelody(String encoded, String key) {
         List<Measure> measures = new ArrayList<>();
         //check suffix
         String suffix = encoded.substring(35, encoded.length());
         String[] bars = suffix.split("\\+");
         for (String bar : bars) {
             String[] barNotes = bar.split("-");
+
             Measure measure = new Measure();
             measure.setNotes(Arrays.asList(barNotes));
             measures.add(measure);
         }
 
-        return measureToJFugueString(measures);
+        String jFugueStr = measureToJFugueString(measures);
 
-
-
-        /*
-        encoded = encoded.replace("*", "-");
-
-        String[] encodedList = encoded.split("-");
-
-        //find indexs of 2 digit values
-        List<Integer> barStartIndexes = new ArrayList<>();
-        for(int i=0; i< encodedList.length; i++){
-            if(encodedList[i].length() == 2){
-                barStartIndexes.add(i);
-            }
+        System.out.println("BEFORE FORCE CORRECT " + jFugueStr);
+        if(config.shouldForceCorrectPitches()){
+            System.out.println("IN FORCE CORRECT");
+            System.out.println("FUCK " + jFugueStr);
+            String[] barNotes = pitchCorrection.forceCorrectPitches(jFugueStr.split(" "), getKey(encoded));
+            jFugueStr = String.join(" ", barNotes);
+            System.out.println("FUCK " + jFugueStr);
         }
+        System.out.println("AFtER FORCE CORRECT " + jFugueStr);
 
-        List<Measure> measures = new ArrayList<>();
-
-        for(Integer startIndex : barStartIndexes){
-            Measure measure = new Measure();
-            measure.key = getNoteName(encodedList[startIndex]);
-            measure.chordOne = encodedList[startIndex+1];
-            measure.chordTwo = encodedList[startIndex+2];
-
-            for(int j=0; j<16; j++){
-                measure.getNotes().add(encodedList[startIndex+3+j]);
-            }
-
-            measures.add(measure);
-        }
-        */
-
+        return jFugueStr;
     }
 
     class NoteDuration {
@@ -288,6 +267,11 @@ public class ChordMelodyDecoder {
         }
 
         throw new RuntimeException("cannot decode: " + encoded);
+    }
+
+    public String getKey(String encoded){
+        String encodedKey = encoded.split("\\^")[0];
+        return getNoteName(encodedKey);
     }
 
     class Measure {

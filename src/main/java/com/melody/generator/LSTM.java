@@ -1,6 +1,7 @@
 package com.melody.generator;
 
 import com.melody.generator.decoder.ChordMelodyDecoder;
+import com.melody.generator.decoder.PitchCorrection;
 import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
@@ -34,12 +35,18 @@ import java.util.Random;
 
 public class LSTM {
 
+    Config config;
+
+    public LSTM(Config config){
+        this.config = config;
+    }
+
     public void run(String keyAndChords) throws Exception {
-        int lstmLayerSize = 140;                    //Number of units in each GravesLSTM layer
+        int lstmLayerSize = 200;                    //Number of units in each GravesLSTM layer
         int miniBatchSize = 32;             //Size of mini batch to use when  training
         int exampleLength = 355;//100 per row         //Length of each training example sequence to use. This could certainly be increased
         int tbpttLength = 355;                       //Length for truncated backpropagation through time. i.e., do parameter updates ever 50 characters
-        int numEpochs = 10;                            //Total number of training epochs
+        int numEpochs = 20;                            //Total number of training epochs
         int generateSamplesEveryNMinibatches = 50;  //How frequently to generate samples from the network? 1000 characters / 50 tbptt length: 20 parameter updates per minibatch
         int nSamplesToGenerate = 100;                    //Number of samples to generate after each training epoch
         int nCharactersToSample = 320;                //Length of each sample to generate
@@ -49,7 +56,7 @@ public class LSTM {
         Random rng = new Random(12345);
 
         //Save the model
-        File savedLocation = new File("TrainedModel_March5.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File("TrainedModel_March9.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model
@@ -69,7 +76,7 @@ public class LSTM {
             for (int j = 0; j < samples.length; j++) {
                 System.out.println();
 
-                ChordMelodyDecoder decoder = new ChordMelodyDecoder();
+                ChordMelodyDecoder decoder = new ChordMelodyDecoder(config);
                 String validString = decoder.extractValid(samples[j]);
 
                 if (validString.equalsIgnoreCase("invalid")) {
@@ -83,9 +90,9 @@ public class LSTM {
                         System.out.println("----- Sample " + j + " -----");
                         System.out.println(samples[j]);
 
-                        playString = decoder.decodeMelody(validString);
+                        playString = decoder.decodeMelody(validString, decoder.getKey(validString));
                         chordString = decoder.decodeChords(validString);
-                        bassString = decoder.decodeBassline(validString);
+                        //bassString = decoder.decodeBassline(validString);
 
                         System.out.println("GOOD: " + playString);
                         System.out.println("CHRORDS: " + chordString);
@@ -94,13 +101,18 @@ public class LSTM {
                         //playString = playString.replace("4", "5");
                         Player player = new Player();
 
-                        Pattern pattern = new Pattern("V0 I[Piano] " + playString + " V1 I[Piano] " + chordString);
+                        System.out.println("F");
+                        String patternStr = "V0 I[Piano] " + playString.trim() + " V1 I[Piano] " + chordString.trim();
+                        System.out.println(patternStr);
+                        Pattern pattern = new Pattern(patternStr);
                         //player.play("V0 " + playString + " V1 " + chordString);
                         //player = null;
 
                         String fileName = "midi" + j + ".mid";
+                        System.out.println("G");
                         MidiFileManager.savePatternToMidi((PatternProducer) pattern, new File(fileName));
 
+                        System.out.println("H");
                         System.out.println("COMPLETE");
                         Thread.sleep(2000);
                     } catch (Exception e) {
@@ -133,11 +145,16 @@ public class LSTM {
                             .activation(Activation.TANH).build())
                     .layer(3, new GravesLSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
                             .activation(Activation.TANH).build())
-                    .layer(4, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MCXENT)
+                    .layer(4, new GravesLSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
+                            .activation(Activation.TANH).build())
+                    .layer(5, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MCXENT)
                             .activation(Activation.SOFTMAX)        //MCXENT + softmax for classification
                             .nIn(lstmLayerSize).nOut(nOut).build())
-                    .backpropType(BackpropType.Standard).tBPTTForwardLength(tbpttLength).tBPTTBackwardLength(tbpttLength)
-                    .pretrain(false).backprop(true)
+                    .backpropType(BackpropType.Standard)
+                    //.tBPTTForwardLength(tbpttLength)
+                    //.tBPTTBackwardLength(tbpttLength)
+                    .pretrain(false)
+                    .backprop(true)
                     .build();
 
             MultiLayerNetwork net = new MultiLayerNetwork(conf);
@@ -190,7 +207,7 @@ public class LSTM {
                             System.out.println(samples[j]);
                             System.out.println();
 
-                            ChordMelodyDecoder decoder = new ChordMelodyDecoder();
+                            ChordMelodyDecoder decoder = new ChordMelodyDecoder(config);
                             String validString = decoder.extractValid(samples[j]);
 
                             if (validString.equalsIgnoreCase("invalid")) {

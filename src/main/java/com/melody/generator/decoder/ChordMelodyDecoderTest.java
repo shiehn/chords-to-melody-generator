@@ -1,7 +1,11 @@
 package com.melody.generator.decoder;
 
+import com.melody.generator.Config;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChordMelodyDecoderTest {
 
@@ -15,7 +19,7 @@ public class ChordMelodyDecoderTest {
         String invalidB = "11^113*113*113*415*713*713*713*315*0000-0000-0000-0000-7250-7251-7251-7251-7251-7251-7251-7251-1150-1151-1151-1151+7250-7251-7251-7251-7251-7251-7250-7251-6250-6251-6251-6251-5150-5151-5151-5151+5150-5151-5151-5151-5151-5151-5151-5151-7150-7151-7151-7151-7151-7151-2150-2151##000000000-0-0-0#000000000000000000000000000000000000000000000000000000000000000";
         String invalidC = "11^113*113*113*415*713*713*713*315*5140-5141-5141-5141-5141-5141-5141-5141-0000-0000-0000-0000-0000-0000-0000-0000+0000-0000-0000-0000+0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000#100000-000-0000000000000000000000000000000000000000000000000000##000000000000000000000000000000000000000000000000000000000000000000000000000";
 
-        ChordMelodyDecoder chordMelodyDecoder = new ChordMelodyDecoder();
+        ChordMelodyDecoder chordMelodyDecoder = new ChordMelodyDecoder(new Config(false));
         Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(validA)));
         Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(validB)));
 
@@ -27,21 +31,28 @@ public class ChordMelodyDecoderTest {
     @Test
     public void shouldProduceJfugeString(){
        String expectedA = "f#5h. a5i f#5i e5h d#5i c#5i b4q f#5w f#5w";
-       String expectedB = "c#5q d#5i e5i g#5i f#5q b4i b4w f#5i g#5i b5h. r0s r0s r0s r0s a5q a5q. a5i";
-       ChordMelodyDecoder decoder = new ChordMelodyDecoder();
+       String expectedB = "c#5q d#5i e5i g#5i f#5q b4i b4w f#5i g#5i b5h. rs rs rs rs a5q a5q. a5i";
+       ChordMelodyDecoder decoder = new ChordMelodyDecoder(new Config(false));
 
-       System.out.println("ACTUAL:   " + decoder.decodeMelody(validA));
+       System.out.println("ACTUAL:   " + decoder.decodeMelody(validA,decoder.getKey(validA)));
        System.out.println("EXPECTED: " + expectedA);
-       Assert.assertTrue(expectedA.trim().equalsIgnoreCase(decoder.decodeMelody(validA).trim()));
+       Assert.assertTrue(expectedA.trim().equalsIgnoreCase(decoder.decodeMelody(validA,decoder.getKey(validA)).trim()));
 
-        System.out.println("ACTUAL:   " + decoder.decodeMelody(validB));
+        System.out.println("ACTUAL:   " + decoder.decodeMelody(validB,decoder.getKey(validB)));
         System.out.println("EXPECTED: " + expectedB);
-        Assert.assertTrue(expectedB.trim().equalsIgnoreCase(decoder.decodeMelody(validB).trim()));
+        Assert.assertTrue(expectedB.trim().equalsIgnoreCase(decoder.decodeMelody(validB,decoder.getKey(validB)).trim()));
+    }
+
+    @Test
+    public void shouldExtractKey(){
+        ChordMelodyDecoder chordMelodyDecoder = new ChordMelodyDecoder(new Config(false));
+
+        String key = chordMelodyDecoder.getKey(validA);
+        Assert.assertEquals("a", key);
     }
 
     @Test
     public void shouldProduceCorrectJFugeString(){
-
         String input = "31^313*313*313*313*613*613*715*715*" +
                 "2140-2141-2040-2041-" +
                 "2040-2040-2040-2040-" +
@@ -62,60 +73,50 @@ public class ChordMelodyDecoderTest {
                 "f5s e5s b4s b4i. b4s b4s " +
                 "b4s b4s b4i " +
                 "b4i. b4s";
-        ChordMelodyDecoder decoder = new ChordMelodyDecoder();
-        String actual = decoder.decodeMelody(input);
+        ChordMelodyDecoder decoder = new ChordMelodyDecoder(new Config(false));
+        String actual = decoder.decodeMelody(input,decoder.getKey(input));
         System.out.println("ACTUAL:   " + actual);
         System.out.println("EXPECTED: " + expected);
 
-        Assert.assertEquals(expected.trim(), decoder.decodeMelody(input).trim());
+        Assert.assertEquals(expected.trim(), decoder.decodeMelody(input,decoder.getKey(input)).trim());
     }
 
-    /*
     @Test
-    31^313*313*313*313*613*613*715*715*2140-2141-2040-2041-2040-2040-2040-2040-2040-2041-3150-3151-2040-2041-1140-1141+2140-3150-2140-2141-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000+6150-5150-2140-2140-2141-2141-2140-2140-2140-2140-2140-2141-2140-2141-2141-2140+0000-0000-7240-7241-6240-6240-6240-6241-0000-0000-0000-0000-0000-0000-0000-0000#
-    */
+    public void shouldPitchCorrectedJFugeString(){
+        String input = "31^313*313*313*313*613*613*715*715*" +
+                "2140-2141-2040-2041-" +
+                "2040-2040-2040-2040-" +
+                "2040-2041-3150-3151-" +
+                "2040-2041-1140-1141+" +
+                "2140-3150-2140-2141-" +
+                "0000-0000-0000-0000-" +
+                "0000-0000-0000-0000-" +
+                "0000-0000-0000-0000+" +
+
+                "6150-5150-2140-2140-" +
+                "2141-2141-2140-2140-" +
+                "2140-2140-2140-2141-" +
+                "2140-2141-2141-2140+";
 
 
+        String expected = "b4i a#4i a#4s a#4s a#4s a#4s a#4i c5i a#4i a4i b4s c5s b4i rs rs rs rs rs rs rs rs rs rs rs rs " +
+                "f5s e5s b4s b4i. b4s b4s " +
+                "b4s b4s b4i " +
+                "b4i. b4s";
+        boolean forceCorrectPitches = true;
+        ChordMelodyDecoder decoder = new ChordMelodyDecoder(new Config(true));
+        String actual = decoder.decodeMelody(input, decoder.getKey(input));
+        System.out.println("ACTUAL:   " + actual);
 
-    /*
+        List<String> badPitches = new ArrayList<>();
+        for(String note : actual.split(" ")){
+           if(note.contains("#")){
+               badPitches.add(note);
+           }
+        }
 
-    THE "roi" is NOT CORRECT .. please make a test for this one
+        System.out.println("BAD NOTES: " + badPitches);
 
-    31^310*310*111*111*411*411*710*710*6140-6141-6141-6141-6141-6141-6141-6141-6140-6141-6141-6141-6141-6141-6141-6141+2140-2141-2141-2141-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000+0000-0000-1040-1041-1140-1141-3150-3151-4150-4151-4150-4151-3150-3151-3150-3151+7140-7141-7141-7141-6140-6141-4150-4151-4150-4151-4151-4151-5140-5141-5141-514##
-CHORDS : 310*310*111*111*411*411*710*710
-CHORDS : 310*310*111*111*411*411*710*710
-GOOD: f4h f4h b4q r0s r0s r0s r0s r0s r0s r0s r0s r0s r0s r0i r0s r0s g#4i a4i c5i d5i d5i c5i c5i g4q f4i d5i d5q e4q
-CHRORDS: cmajh  cmajh  aminh  aminh  dminh  dminh  gmajh  gmajh
-
-     */
-
-
-
-
-    /*
-    @Test
-    public void shouldGenerateValidJfugueString() {
-        ChordMelodyDecoder chordMelodyDecoder = new ChordMelodyDecoder();
-
-        String inputA = "42-500-500-5050-5051-5051-5051-7140-7141-7141-7141-2040-2041-5050-5051-5051-5051-4150-4151";
-        String inputB = "42-715-715-4150-4151-4151-4151-7140-7141-7141-7141-2140-2141-4150-4151-4151-4151-3150-3151-";
-        String inputC = "42-315-315-3150-3151-3151-3151-3151-3151-3151-3151-3151-3151-3151-3151-3151-3151-3151-3151-";
-        String inputD = "42-400-315-3150-3151-3151-3151-2040-2041-2041-2041-1040-1041-1041-1041-7140-7141-7141-7141-";
-
-        String expectA = "d#5q g4q a#4i d#5q d5i";
-        String expectB = "d5q g4q b4i d5q c5i";
-        String expectC = "c5w";
-        String expectD = "c5q a#4q g#4q g4q";
-
-        System.out.println(chordMelodyDecoder.decode(inputA));
-        Assert.assertTrue(expectA.trim().equalsIgnoreCase(chordMelodyDecoder.decode(inputA).trim()));
-        System.out.println(chordMelodyDecoder.decode(inputB));
-        Assert.assertTrue(expectB.trim().equalsIgnoreCase(chordMelodyDecoder.decode(inputB).trim()));
-        System.out.println(chordMelodyDecoder.decode(inputC));
-        Assert.assertTrue(expectC.trim().equalsIgnoreCase(chordMelodyDecoder.decode(inputC).trim()));
-        System.out.println(chordMelodyDecoder.decode(inputD));
-        Assert.assertTrue(expectD.trim().equalsIgnoreCase(chordMelodyDecoder.decode(inputD).trim()));
+        Assert.assertEquals(0, badPitches.size());
     }
-    */
-
 }
