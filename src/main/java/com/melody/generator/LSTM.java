@@ -56,7 +56,7 @@ public class LSTM {
         Random rng = new Random(12345);
 
         //Save the model
-        File savedLocation = new File("TrainedModel_March9.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File("TrainedModel_Nvidia.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model

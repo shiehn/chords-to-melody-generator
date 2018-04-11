@@ -3,19 +3,51 @@ package com.melody.generator.decoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class PitchCorrection {
+
+    public String convertToNaturalOrSharp(String note){
+
+        if(note.length() > 1 && (note.charAt(1)+"").equalsIgnoreCase("b")){
+            switch (note.toLowerCase()){
+                case "ab":
+                    return "g#";
+                case "bb":
+                    return "a#";
+                case "cb":
+                    return "b";
+                case "db":
+                    return "c#";
+                case "eb":
+                    return "d#";
+                case "fb":
+                    return "d";
+                case "gb":
+                    return "f#";
+
+            }
+
+            throw new RuntimeException("COULD NOT CORRECT FLAT TO SHARP: note=" + note);
+        }
+
+        return note;
+    }
+
     public String[] forceCorrectPitches(String[] notes, String key){
+
+        key = convertToNaturalOrSharp(key);
+
+        for (int i=0; i<notes.length; i++) {
+            notes[i] = convertToNaturalOrSharp(notes[i]);
+        }
+
         /*
         String expected = "b4i a#4i a#4s a#4s a#4s a#4s a#4i c5i a#4i a4i b4s c5s b4i rs rs rs rs rs rs rs rs rs rs rs rs " +
                 "f5s e5s b4s b4i. b4s b4s " +
                 "b4s b4s b4i " +
                 "b4i. b4s";
          */
-
-
-
-
 
         //collect not names
         List<String> correctedNotes = new ArrayList<>();
@@ -47,15 +79,17 @@ public class PitchCorrection {
         return correctedNotes.toArray(corrected);
     }
 
-
     private boolean keyContainsNote(String note, List<String> keyNotes){
         return keyNotes.contains(note);
     }
 
-    private String findNearestNoteInKey(String noteName, List<String> keyNotes){
+    public String findNearestNoteInKey(String noteName, List<String> keyNotes){
         for(String keyNote: keyNotes){
             if(keyNote.contains(noteName)){
                 return keyNote;
+            }else{
+                System.out.println("not able to find nearby not in key for note=" + noteName + " in key=" + keyNotes);
+                return keyNotes.get(new Random().nextInt(keyNotes.size()));
             }
         }
 
@@ -88,8 +122,8 @@ public class PitchCorrection {
                 return Arrays.asList("g", "a", "b", "c", "d", "e", "f#");
             case "g#":
                 return Arrays.asList("g#", "a#", "b#", "c#", "d#", "e#", "g");
-                default:
-                    throw new RuntimeException("unknown key!!! = " + key);
+            default:
+                throw new RuntimeException("unknown key!!! = " + key);
         }
     }
 }
