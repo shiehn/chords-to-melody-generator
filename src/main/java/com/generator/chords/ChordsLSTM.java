@@ -1,14 +1,12 @@
-package com.melody.generator;
+package com.generator.chords;
 
-import com.melody.generator.decoder.ChordMelodyDecoder;
-import com.melody.generator.decoder.PitchCorrection;
+import com.generator.decoder.ChordMelodyDecoder;
+import com.generator.melody.Config;
 import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.nn.api.Layer;
-import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.BackpropType;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.Updater;
 import org.deeplearning4j.nn.conf.layers.GravesLSTM;
 import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -28,35 +26,38 @@ import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.learning.config.RmsProp;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.io.File;
 import java.util.Random;
 
-public class LSTM {
+public class ChordsLSTM {
 
     Config config;
 
-    public LSTM(Config config){
+    public ChordsLSTM(Config config){
         this.config = config;
     }
+
+    //#31:310-610%310*610*310*610#31:310-610%310*10*310*610#31:310-610%310*610*310*613#31:310-610%310*613*613*610#31:310-613%613*610*31
 
     public void run(String keyAndChords) throws Exception {
         int lstmLayerSize = 200;                    //Number of units in each GravesLSTM layer
         int miniBatchSize = 32;             //Size of mini batch to use when  training
-        int exampleLength = 355;//100 per row         //Length of each training example sequence to use. This could certainly be increased
+        int exampleLength = 27;//100 per row         //Length of each training example sequence to use. This could certainly be increased
         int tbpttLength = 355;                       //Length for truncated backpropagation through time. i.e., do parameter updates ever 50 characters
-        int numEpochs = 20;                            //Total number of training epochs
+        int numEpochs = 4;                            //Total number of training epochs
         int generateSamplesEveryNMinibatches = 50;  //How frequently to generate samples from the network? 1000 characters / 50 tbptt length: 20 parameter updates per minibatch
         int nSamplesToGenerate = 100;                    //Number of samples to generate after each training epoch
-        int nCharactersToSample = 320;                //Length of each sample to generate
+        int nCharactersToSample = 27;                //Length of each sample to generate
         String generationInitialization = null;        //Optional character initialization; a random character is used if null
-        // Above is Used to 'prime' the LSTM with a character sequence to continue/complete.
+        // Above is Used to 'prime' the MelodyLSTM with a character sequence to continue/complete.
         // Initialization characters must all be in CharacterIterator.getMinimalCharacterSet() by default
         Random rng = new Random(12345);
 
         //Save the model
-        File savedLocation = new File("TrainedModel_Nvidia.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File("trainedModel_chords_0.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model
@@ -77,7 +78,7 @@ public class LSTM {
                 System.out.println();
 
                 ChordMelodyDecoder decoder = new ChordMelodyDecoder(config);
-                String validString = decoder.extractValid(samples[j]);
+                String validString = decoder.extractValidChords(samples[j]);
 
                 if (validString.equalsIgnoreCase("invalid")) {
                     System.out.println("INVALID SAMPLE!! DO NOT PLAY:");
@@ -129,13 +130,10 @@ public class LSTM {
 
             //Set up network configuration:
             MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                    .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT).iterations(1)
-                    .learningRate(0.01)
                     .seed(12345)
-                    .regularization(true)
                     .l2(0.001)
                     .weightInit(WeightInit.XAVIER)
-                    .updater(Updater.RMSPROP)
+                    .updater(new RmsProp(0.01))
                     .list()
                     .layer(0, new GravesLSTM.Builder().nIn(iter.inputColumns()).nOut(lstmLayerSize)
                             .activation(Activation.TANH).build())
@@ -167,9 +165,6 @@ public class LSTM {
 
             IterationListener[] listeners = new IterationListener[]{new ScoreIterationListener(1),new StatsListener(statsStorage)};
             net.setListeners(listeners);
-
-
-
 
             //Print the  number of parameters in the network (and for each layer)
             Layer[] layers = net.getLayers();
@@ -208,7 +203,7 @@ public class LSTM {
                             System.out.println();
 
                             ChordMelodyDecoder decoder = new ChordMelodyDecoder(config);
-                            String validString = decoder.extractValid(samples[j]);
+                            String validString = decoder.extractValidChords(samples[j]);
 
                             if (validString.equalsIgnoreCase("invalid")) {
                                 System.out.println("INVALID SAMPLE!! DO NOT PLAY:");

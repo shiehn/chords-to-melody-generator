@@ -1,4 +1,4 @@
-package com.melody.generator;
+package com.generator.chords;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -12,8 +12,8 @@ import java.util.Random;
 public class DataIngestor {
 
     public CharacterIterator getCharacterIterator(int miniBatchSize, int sequenceLength) throws Exception {
-        String url = "https://s3-us-west-2.amazonaws.com/sastrainingdata/chord-melody-data.txt?cache=" + DateTime.now();
-        String fileLocation = "chord-melody-data.txt";    //Storage location from downloaded file
+        String url = "https://s3-us-west-2.amazonaws.com/sastrainingdata/chord-data.txt?cache=" + DateTime.now();
+        String fileLocation = "chord-data.txt";    //Storage location from downloaded file
         File f = new File(fileLocation);
         if (!f.exists()) {
             FileUtils.copyURLToFile(new URL(url), f);
@@ -24,7 +24,7 @@ public class DataIngestor {
 
         if (!f.exists()) throw new IOException("File does not exist: " + fileLocation);    //Download problem?
 
-        char[] validCharacters = {'^', '+', '#', '*', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        char[] validCharacters = {'#', '*', '-', '%', ':', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
         //char[] validCharacters = CharacterIterator.getMinimalCharacterSet();	//Which characters are allowed? Others will be removed
         return new CharacterIterator(fileLocation, Charset.forName("UTF-8"),
                 miniBatchSize, sequenceLength, validCharacters, new Random(12345));

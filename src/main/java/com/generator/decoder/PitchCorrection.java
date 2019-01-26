@@ -1,4 +1,4 @@
-package com.melody.generator.decoder;
+package com.generator.decoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;

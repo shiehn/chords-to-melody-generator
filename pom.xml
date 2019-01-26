@@ -16,20 +16,18 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <nd4j.version>0.9.1</nd4j.version>
-        <dl4j.version>0.9.1</dl4j.version>
+        <nd4j.version>1.0.0-alpha</nd4j.version>
+        <dl4j.version>1.0.0-alpha</dl4j.version>
         <nd4j.backend>nd4j-native-platform</nd4j.backend>
         <!--<nd4j.backend>nd4j-cuda-8.0-platform</nd4j.backend>-->
         <scala.binary.version>2.11</scala.binary.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.nd4j</groupId>
@@ -56,6 +54,12 @@
             <version>${dl4j.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
         <!-- ParallelWrapper & ParallelInference live here -->
         <dependency>
             <groupId>org.deeplearning4j</groupId>
@@ -75,8 +79,6 @@
             <artifactId>xom</artifactId>
             <version>1.2.5</version>
         </dependency>
-
-
     </dependencies>
 
     <build>
@@ -86,9 +88,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-
         </plugins>
     </build>
-
 </project>

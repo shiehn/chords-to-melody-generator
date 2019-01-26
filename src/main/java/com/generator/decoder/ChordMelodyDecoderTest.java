@@ -1,8 +1,9 @@
-package com.melody.generator.decoder;
+package com.generator.decoder;
 
-import com.melody.generator.Config;
+import com.generator.melody.Config;
 import org.junit.Assert;
 import org.junit.Test;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +14,38 @@ public class ChordMelodyDecoderTest {
     String validB = "11^113*113*113*415*713*713*713*315*3250-3251-3251-3251-4250-4251-5150-5151-7250-7251-6250-6251-6251-6251-2140-2141+2140-2141-2141-2141-2141-2141-2141-2141-2141-2141-2141-2141-2141-2141-2141-2141+6250-6251-7250-7251-2150-2151-2151-2151-2151-2151-2151-2151-2151-2151-2151-2151+0000-0000-0000-0000-1150-1151-1151-1151-1150-1151-1151-1151-1151-1151-1150-1151#";
 
     @Test
-    public void shouldDetermineIfValid(){
+    public void shouldDetermineIfValidMelody(){
 
         String invalidA = "11^113*113*113*415*713*713*713*315*0000-0000-0000-0000-4260-4261-4261-4261-4260-4261-5160-5161-3160-3161-3161-3161+3260-3261-3261-3261-3261-3261-3261-3261-1250-1251-3260-3261-1250-1251-2150-2151+0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000#4000000000000000000000000000#00##0#000#00000000000000000000000000000000000000009";
         String invalidB = "11^113*113*113*415*713*713*713*315*0000-0000-0000-0000-7250-7251-7251-7251-7251-7251-7251-7251-1150-1151-1151-1151+7250-7251-7251-7251-7251-7251-7250-7251-6250-6251-6251-6251-5150-5151-5151-5151+5150-5151-5151-5151-5151-5151-5151-5151-7150-7151-7151-7151-7151-7151-2150-2151##000000000-0-0-0#000000000000000000000000000000000000000000000000000000000000000";
         String invalidC = "11^113*113*113*415*713*713*713*315*5140-5141-5141-5141-5141-5141-5141-5141-0000-0000-0000-0000-0000-0000-0000-0000+0000-0000-0000-0000+0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000#100000-000-0000000000000000000000000000000000000000000000000000##000000000000000000000000000000000000000000000000000000000000000000000000000";
 
         ChordMelodyDecoder chordMelodyDecoder = new ChordMelodyDecoder(new Config(false));
-        Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(validA)));
-        Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(validB)));
+        Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidMelody(validA)));
+        Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidMelody(validB)));
 
-        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(invalidA)));
-        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(invalidB)));
-        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValid(invalidC)));
+        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidMelody(invalidA)));
+        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidMelody(invalidB)));
+        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidMelody(invalidC)));
+    }
+
+    @Test
+    public void shouldDetermineIfValidChords(){
+
+        String validA = "#61:310-610%310*610*310*610";
+        String validB = "#31:110-610%310*610*310*510";
+
+        String invalidA = "#31:310-610%310:610*310*610";
+        String invalidB = "#31:310-610%310%610*310*610";
+        String invalidC = "#31:310-610%310*610*310-610";
+
+        ChordMelodyDecoder chordMelodyDecoder = new ChordMelodyDecoder(new Config(false));
+        Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidChords(validA)));
+        Assert.assertFalse(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidChords(validB)));
+
+        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidChords(invalidA)));
+        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidChords(invalidB)));
+        Assert.assertTrue(chordMelodyDecoder.INVALID.equalsIgnoreCase(chordMelodyDecoder.extractValidChords(invalidC)));
     }
 
     @Test

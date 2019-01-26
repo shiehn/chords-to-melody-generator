@@ -1,6 +1,6 @@
-package com.melody.generator.decoder;
+package com.generator.decoder;
 
-import com.melody.generator.Config;
+import com.generator.melody.Config;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -18,7 +18,28 @@ public class ChordMelodyDecoder {
         this.pitchCorrection = new PitchCorrection();
     }
 
-    public String extractValid(String seq) {
+    public String extractValidChords(String seq) {
+        //#31:310-610%310*610*310*610
+        if(count(seq, "*") != 3) {
+            return INVALID;
+        }
+
+        if(count(seq, "#") != 1) {
+            return INVALID;
+        }
+
+        if(count(seq, "-") != 1) {
+            return INVALID;
+        }
+
+        if(count(seq, "%") != 1) {
+            return INVALID;
+        }
+
+        return seq;
+    }
+
+    public String extractValidMelody(String seq) {
         //"31*313*715*3150-3151-3151-3151-3151-3151-3151-3151-2140-2141-2141-2141-7140-7141-7141-7141"
 
         //must be greater than 89 chars
@@ -311,5 +332,13 @@ public class ChordMelodyDecoder {
         public void setNotes(List<String> notes) {
             this.notes = notes;
         }
+    }
+
+    public int count(String text, String find) {
+        int index = 0, count = 0, length = find.length();
+        while( (index = text.indexOf(find, index)) != -1 ) {
+            index += length; count++;
+        }
+        return count;
     }
 }

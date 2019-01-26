@@ -1,4 +1,4 @@
-package com.melody.generator;
+package com.generator.melody;
 
 public class Config {
 
