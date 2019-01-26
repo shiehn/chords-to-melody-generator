@@ -7,6 +7,7 @@ import org.deeplearning4j.nn.conf.BackpropType;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.GravesLSTM;
+import org.deeplearning4j.nn.conf.layers.LSTM;
 import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
@@ -25,6 +26,7 @@ import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.RmsProp;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
@@ -40,21 +42,21 @@ public class MelodyLSTM {
     }
 
     public void run(String keyAndChords) throws Exception {
-        int lstmLayerSize = 200;                    //Number of units in each GravesLSTM layer
+        int lstmLayerSize = 360;                    //Number of units in each GravesLSTM layer
         int miniBatchSize = 32;             //Size of mini batch to use when  training
         int exampleLength = 355;//100 per row         //Length of each training example sequence to use. This could certainly be increased
         int tbpttLength = 355;                       //Length for truncated backpropagation through time. i.e., do parameter updates ever 50 characters
-        int numEpochs = 20;                            //Total number of training epochs
+        int numEpochs = 12;                            //Total number of training epochs
         int generateSamplesEveryNMinibatches = 50;  //How frequently to generate samples from the network? 1000 characters / 50 tbptt length: 20 parameter updates per minibatch
-        int nSamplesToGenerate = 100;                    //Number of samples to generate after each training epoch
+        int nSamplesToGenerate = 1000;                    //Number of samples to generate after each training epoch
         int nCharactersToSample = 320;                //Length of each sample to generate
         String generationInitialization = null;        //Optional character initialization; a random character is used if null
         // Above is Used to 'prime' the MelodyLSTM with a character sequence to continue/complete.
         // Initialization characters must all be in CharacterIterator.getMinimalCharacterSet() by default
-        Random rng = new Random(12345);
+        Random rng = new Random(92345);
 
         //Save the model
-        File savedLocation = new File("TrainedModel_Nvidia.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File("trained-model-wed.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model
@@ -127,27 +129,22 @@ public class MelodyLSTM {
 
             //Set up network configuration:
             MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                    .seed(12345)
+                    .seed(84425)
                     .l2(0.001)
                     .weightInit(WeightInit.XAVIER)
-                    .updater(new RmsProp(0.01))
+                    .updater(new RmsProp.Builder().learningRate(0.04).build())
                     .list()
-                    .layer(0, new GravesLSTM.Builder().nIn(iter.inputColumns()).nOut(lstmLayerSize)
+                    .layer(0, new LSTM.Builder().nIn(iter.inputColumns()).nOut(lstmLayerSize)
+                            .activation(Activation.SIGMOID).build())
+                    .layer(1, new LSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
                             .activation(Activation.TANH).build())
-                    .layer(1, new GravesLSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
+                    .layer(2, new LSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
                             .activation(Activation.TANH).build())
-                    .layer(2, new GravesLSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
+                    .layer(3, new LSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
                             .activation(Activation.TANH).build())
-                    .layer(3, new GravesLSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
-                            .activation(Activation.TANH).build())
-                    .layer(4, new GravesLSTM.Builder().nIn(lstmLayerSize).nOut(lstmLayerSize)
-                            .activation(Activation.TANH).build())
-                    .layer(5, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MCXENT)
-                            .activation(Activation.SOFTMAX)        //MCXENT + softmax for classification
+                    .layer(4, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MCXENT).activation(Activation.SOFTMAX)        //MCXENT + softmax for classification
                             .nIn(lstmLayerSize).nOut(nOut).build())
-                    .backpropType(BackpropType.Standard)
-                    //.tBPTTForwardLength(tbpttLength)
-                    //.tBPTTBackwardLength(tbpttLength)
+                    .backpropType(BackpropType.TruncatedBPTT).tBPTTForwardLength(tbpttLength).tBPTTBackwardLength(tbpttLength)
                     .pretrain(false)
                     .backprop(true)
                     .build();
