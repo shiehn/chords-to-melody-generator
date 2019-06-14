@@ -26,11 +26,11 @@ import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.RmsProp;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Random;
 
 public class MelodyLSTM {
@@ -48,7 +48,7 @@ public class MelodyLSTM {
         int tbpttLength = 355;                       //Length for truncated backpropagation through time. i.e., do parameter updates ever 50 characters
         int numEpochs = 12;                            //Total number of training epochs
         int generateSamplesEveryNMinibatches = 50;  //How frequently to generate samples from the network? 1000 characters / 50 tbptt length: 20 parameter updates per minibatch
-        int nSamplesToGenerate = 1000;                    //Number of samples to generate after each training epoch
+        int nSamplesToGenerate = 10;                    //Number of samples to generate after each training epoch
         int nCharactersToSample = 320;                //Length of each sample to generate
         String generationInitialization = null;        //Optional character initialization; a random character is used if null
         // Above is Used to 'prime' the MelodyLSTM with a character sequence to continue/complete.
@@ -56,7 +56,7 @@ public class MelodyLSTM {
         Random rng = new Random(92345);
 
         //Save the model
-        File savedLocation = new File("trained-melody-model.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File(Paths.get(System.getenv("MODEL_PATH") + "/trained-melody-model.zip").toString());      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model
@@ -105,12 +105,12 @@ public class MelodyLSTM {
                         String patternStr = "V0 I[Piano] " + playString.trim() + " V1 I[Piano] " + chordString.trim();
                         System.out.println(patternStr);
                         Pattern pattern = new Pattern(patternStr);
-                        player.play("V0 " + playString + " V1 " + chordString);
+                        //player.play("V0 " + playString + " V1 " + chordString);
                         //player = null;
 
                         String fileName = "midi" + j + ".mid";
                         System.out.println("G");
-                        MidiFileManager.savePatternToMidi((PatternProducer) pattern, new File(fileName));
+                        MidiFileManager.savePatternToMidi((PatternProducer) pattern, new File(Paths.get(System.getenv("MIDI_OUTPUT") + "/" + fileName).toString()));
 
                         System.out.println("H");
                         System.out.println("COMPLETE");
