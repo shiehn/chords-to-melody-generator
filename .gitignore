@@ -14,7 +14,6 @@
 *.jar
 *.war
 *.ear
-*.zip
 *.tar.gz
 *.rar
 
@@ -24,5 +23,3 @@ hs_err_pid*
 #IDE
 .idea/*
 
-chord-melody-data.txt
-TrainedModel.zip
