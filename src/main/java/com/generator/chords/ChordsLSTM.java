@@ -57,7 +57,7 @@ public class ChordsLSTM {
         Random rng = new Random(12345);
 
         //Save the model
-        File savedLocation = new File("trainedModel_chords_0.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File("trained-melody-model.zip");      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model

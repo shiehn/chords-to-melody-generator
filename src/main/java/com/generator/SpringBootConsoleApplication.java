@@ -26,14 +26,18 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if(args == null || args.length < 1) {
-            System.out.println("please run with flags:");
-            System.out.println("-mode=melody -chords=31^313*313*313*313*613*613*715*715*");
-            System.out.println("-mode=chords -chords=#31:313-313%");
-            exit(1);
-        }
+//        if(args == null || args.length < 1) {
+//            System.out.println("please run with flags:");
+//            System.out.println("-mode=melody -chords=31^313*313*313*313*613*613*715*715*");
+//            System.out.println("-mode=chords -chords=#31:313-313%");
+//            exit(1);
+//        }
+//
+//        System.out.println(args[0]);
 
-        System.out.println(args[0]);
+        args = new String[2];
+        args[0] = "-mode=melody";
+        args[1] = "-chords=31^313*313*313*313*613*613*715*715*";
 
         if(args[0].split("=")[1].equalsIgnoreCase("chords")){
 

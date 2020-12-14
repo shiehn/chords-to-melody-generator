@@ -56,7 +56,7 @@ public class MelodyLSTM {
         Random rng = new Random(92345);
 
         //Save the model
-        File savedLocation = new File(Paths.get(System.getenv("MODEL_PATH") + "/trained-melody-model.zip").toString());      //Where to save the network. Note: the file is in .zip format - can be opened externally
+        File savedLocation = new File(Paths.get("trained-melody-model.zip").toString());      //Where to save the network. Note: the file is in .zip format - can be opened externally
 
         System.out.println("TRYING TO LOAD MODEL FROM : " + savedLocation.getAbsolutePath());
         //Load the model
@@ -110,7 +110,8 @@ public class MelodyLSTM {
 
                         String fileName = "midi" + j + ".mid";
                         System.out.println("G");
-                        MidiFileManager.savePatternToMidi((PatternProducer) pattern, new File(Paths.get(System.getenv("MIDI_OUTPUT") + "/" + fileName).toString()));
+                        //MidiFileManager.savePatternToMidi((PatternProducer) pattern, new File(Paths.get(System.getenv("MIDI_OUTPUT") + "/" + fileName).toString()));
+                        MidiFileManager.savePatternToMidi((PatternProducer) pattern, new File(Paths.get("output/" + fileName).toString()));
 
                         System.out.println("H");
                         System.out.println("COMPLETE");
