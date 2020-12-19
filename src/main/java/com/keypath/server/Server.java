@@ -2,10 +2,11 @@ package com.keypath.server;
 
 import com.keypath.graph.ChordGraph;
 import com.keypath.server.model.RenderData;
+import org.apache.commons.compress.utils.IOUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.UUID;
+
+import java.io.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -25,22 +26,15 @@ public class Server {
         return chordGraph.createGraph();
     }
 
-    @GetMapping("/file")
-    String getFile() {
-
-        UUID uuid = UUID.randomUUID();
-
-        try {
-            FileWriter myWriter = new FileWriter("output/" + uuid.toString() + ".txt");
-            myWriter.write(uuid.toString());
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        return "http://localhost:8080/output/" + uuid.toString() + ".txt";
+    @GetMapping(
+            value = "/midi",
+            produces = MediaType.MULTIPART_MIXED_VALUE
+    )
+    public @ResponseBody byte[] getImageWithMediaType() throws IOException {
+        final File initialFile = new File("output/midi0d05fbe3-b6e0-45f3-830e-5031d31a8b4f.mid");
+        final InputStream in =
+                new DataInputStream(new FileInputStream(initialFile));
+        return IOUtils.toByteArray(in);
     }
 }
 

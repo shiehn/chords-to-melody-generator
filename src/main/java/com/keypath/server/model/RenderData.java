@@ -12,6 +12,12 @@ public class RenderData {
     @JsonProperty("links")
     public List<Link> Links = new ArrayList<>();
 
+    @JsonProperty("midi")
+    public String MidiURL;
+
+    @JsonProperty("error")
+    public String ErrorMessage;
+
     public RenderData(List<IdKeyNote> nodes, List<Link> links) {
         this.Nodes = nodes;
         this.Links = links;

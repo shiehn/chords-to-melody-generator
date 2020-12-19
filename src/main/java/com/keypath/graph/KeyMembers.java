@@ -30,181 +30,181 @@ public class KeyMembers {
 
         // A NATURAL
         List<IdKeyNote> nodes = new ArrayList<>();
-        String key = "an";
+        String key = "a";
         String color = "green";
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "dn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f3", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // A SHARP
         nodes = new ArrayList<>();
-        key = "as";
+        key = "a#";
         color = "pink";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fn", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // B NATURAL
         nodes = new ArrayList<>();
-        key = "bn";
+        key = "b";
         color = "yellow";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // C NATURAL
         nodes = new ArrayList<>();
-        key = "cn";
+        key = "c";
         color = "orange";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // C SHARP
         nodes = new ArrayList<>();
-        key = "cs";
+        key = "c#";
         color = "black";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // D NATURAL
         nodes = new ArrayList<>();
-        key = "dn";
+        key = "d";
         color = "red";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "dn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // D SHARP
         nodes = new ArrayList<>();
-        key = "ds";
+        key = "d#";
         color = "maroon";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "dn", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // E NATURAL
         nodes = new ArrayList<>();
-        key = "en";
+        key = "e";
         color = "teal";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // F NATURAL
         nodes = new ArrayList<>();
-        key = "fn";
+        key = "f";
         color = "brown";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "dn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // F SHARP
         nodes = new ArrayList<>();
-        key = "fs";
+        key = "f#";
         color = "purple";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "es", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
         // G NATURAL
         nodes = new ArrayList<>();
-        key = "gn";
+        key = "g";
         color = "lime";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "an", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "bn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "dn", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "en", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fs", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "b", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "e", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f#", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
 
         // G SHARP
         nodes = new ArrayList<>();
-        key = "gs";
+        key = "g#";
         color = "blue";
 
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gs", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "as", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "cs", "maj7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "ds", "dom7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "fn", "min7", color));
-        nodes.add(new IdKeyNote(this.incrementId(), key, "gn", "m7b5", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "a#", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "c#", "maj7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "d#", "dom7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "f", "min7", color));
+        nodes.add(new IdKeyNote(this.incrementId(), key, "g", "dim", color));
 
         this.keyNoteMap.put(key, nodes);
 
