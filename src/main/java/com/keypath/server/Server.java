@@ -23,7 +23,14 @@ public class Server {
     @GetMapping("/graph")
     RenderData get() {
         ChordGraph chordGraph = new ChordGraph();
-        return chordGraph.createGraph();
+        RenderData renderData = null;
+        try {
+            renderData = chordGraph.createGraph();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return renderData;
     }
 
     @GetMapping(

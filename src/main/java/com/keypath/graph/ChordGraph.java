@@ -1,5 +1,6 @@
 package com.keypath.graph;
 
+import com.keypath.database.MidiDB;
 import com.keypath.server.model.Link;
 import com.keypath.server.model.RenderData;
 import org.jfugue.midi.MidiFileManager;
@@ -8,6 +9,8 @@ import org.jfugue.pattern.PatternProducer;
 import org.jfugue.player.Player;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,14 +19,16 @@ public class ChordGraph {
     private KeyMembers keyMembers;
     private ChordPaths chordPaths;
     private ChordEdges chordEdges;
+    private MidiDB midiDB;
 
     public ChordGraph() {
         this.keyMembers = new KeyMembers();
         this.chordPaths = new ChordPaths();
         this.chordEdges = new ChordEdges();
+        this.midiDB = new MidiDB();
     }
 
-    public RenderData createGraph() {
+    public RenderData createGraph() throws IOException {
 
         System.out.println("0 KEY = " + this.keyMembers.getById(0).Key + " CHORD = " + this.keyMembers.getById(0).Chord);
         System.out.println("71 KEY = " + this.keyMembers.getById(70).Key + " CHORD = " + this.keyMembers.getById(70).Chord);
@@ -63,16 +68,19 @@ public class ChordGraph {
         //player.play("V0 " + playString + " V1 " + chordString);
         //player = null;
 
-        return saveMidiFile(renderData, pattern);
+        String sessionID = "steve-one";
+
+        return saveMidiFile(renderData, pattern, sessionID);
     }
 
-    private RenderData saveMidiFile(RenderData renderData, PatternProducer pattern) {
-        String fileName = "output/midi" + UUID.randomUUID().toString() + ".mid";
-        try {
-            MidiFileManager.savePatternToMidi(pattern, new File(fileName));
+    private RenderData saveMidiFile(RenderData renderData, PatternProducer pattern, String sessionID) throws IOException {
+        String fileName = (new Date()).getTime() + "$" + UUID.randomUUID().toString() + ".mid";
+        String sessionPath = this.midiDB.createMidiFilePath(sessionID);
 
-            MidiFileManager.save(new Player().getSequence(pattern), new File(fileName));
-            renderData.MidiURL = "http://localhost:8080/" + fileName;
+        try {
+            //MidiFileManager.savePatternToMidi(pattern, new File(sessionPath + "/" + fileName));
+            MidiFileManager.save(new Player().getSequence(pattern), new File(sessionPath + "/" + fileName));
+            renderData.MidiURL = "http://localhost:8080/" + sessionPath + "/" + fileName;
         } catch (Exception e){
             renderData.ErrorMessage = "failed to generate Midi data";
             System.out.println("ERROR: " + e.toString());
