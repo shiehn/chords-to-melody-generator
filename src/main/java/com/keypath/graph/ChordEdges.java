@@ -16,24 +16,25 @@ public class ChordEdges {
 
         for (Map.Entry<String, List<IdKeyNote>> entry : keyNoteMap.entrySet()) {
             //edges to self
-            List<Link> links = this.createEdgesToSelf(entry.getValue());
-            edges.addAll(links);
+            edges = this.createEdgesToSelf(entry.getValue(), edges);
 
             //collect all keys in one list
             idKeyNotes.addAll(entry.getValue());
         }
 
         //edges to other
-        edges.addAll(this.createEdgesToOther(idKeyNotes));
+        edges = this.createEdgesToOther(idKeyNotes, edges);
 
         return edges;
     }
 
-    public List<Link> createEdgesToSelf(List<IdKeyNote> idKeyNotes) {
-        List<Link> edges = new ArrayList<>();
-
+    public List<Link> createEdgesToSelf(List<IdKeyNote> idKeyNotes, List<Link> edges) {
         for (int i = 0; i < idKeyNotes.size(); i++) {
             for (int j = i; j < idKeyNotes.size(); j++) {
+                if(idKeyNotes.get(i).Id == idKeyNotes.get(j).Id) {
+                    continue;
+                }
+
                 edges.add(new Link(idKeyNotes.get(i).Id, idKeyNotes.get(j).Id));
             }
         }
@@ -41,8 +42,7 @@ public class ChordEdges {
         return edges;
     }
 
-    public List<Link> createEdgesToOther(List<IdKeyNote> idKeyNotes) {
-        List<Link> edges = new ArrayList<>();
+    public List<Link> createEdgesToOther(List<IdKeyNote> idKeyNotes, List<Link> edges) {
         Map<String, String> tempTable = new HashMap<>();
 
         for (int i = 0; i < idKeyNotes.size(); i++) {
@@ -55,6 +55,27 @@ public class ChordEdges {
 
                     //compare the chord
                     if ((keyNoteA.Note + keyNoteA.Chord).equals(keyNoteB.Note + keyNoteB.Chord)) {
+                        //cannot be the same id
+                        if(keyNoteA.Id == keyNoteB.Id) {
+                            continue;
+                        }
+
+                        //cannot exist in reverse order
+                        Boolean edgeExists = false;
+                        for (Link l : edges) {
+                            if(!edgeExists && l.Target == keyNoteA.Id && l.Source == keyNoteB.Id) {
+                                edgeExists = true;
+                            }
+
+                            if(!edgeExists && l.Source == keyNoteA.Id && l.Target == keyNoteB.Id) {
+                                edgeExists = true;
+                            }
+                        }
+
+                        if(edgeExists) {
+                            continue;
+                        }
+
                         edges.add(new Link(keyNoteA.Id, keyNoteB.Id));
                         tempTable.put(keyNoteA.KeyNoteChord + ":" + keyNoteB.KeyNoteChord, "complete");
                     }

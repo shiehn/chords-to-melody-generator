@@ -10,6 +10,7 @@ import org.jfugue.player.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -35,11 +36,13 @@ public class ChordGraph {
 
         List<Link> edges = this.chordEdges.createEdges(this.keyMembers.getKeyNoteMap());
 
-        RenderData renderData = new RenderData(this.keyMembers.getAllKeys(), edges);
-
         List<Link> chordPath = this.chordPaths.generateChordPath(edges, this.keyMembers);
 
-        edges.addAll(chordPath);
+        //List<Link> chordPath = new ArrayList<>();
+
+        edges = this.chordPaths.addOrUpdateChordPathLinks(chordPath, edges);
+
+        RenderData renderData = new RenderData(this.keyMembers.getAllKeys(), edges);
 
         System.out.println("************************************************************************");
         System.out.println("************************************************************************");

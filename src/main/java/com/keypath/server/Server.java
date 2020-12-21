@@ -34,10 +34,7 @@ public class Server {
         return renderData;
     }
 
-    @GetMapping(
-            value = "/midi/{sessionid}/{midiid}",
-            produces = MediaType.MULTIPART_MIXED_VALUE
-    )
+    @GetMapping(value = "/midi/{sessionid}/{midiid}", produces = MediaType.MULTIPART_MIXED_VALUE)
     public @ResponseBody byte[] getImageWithMediaType(@PathVariable("sessionid") String sessionId, @PathVariable("midiid") String midiId) throws IOException {
 
         File dir = new File(String.format("output/%s", sessionId));

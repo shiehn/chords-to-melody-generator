@@ -11,6 +11,34 @@ import java.util.List;
 
 public class ChordPaths {
 
+    public List<Link> addOrUpdateChordPathLinks(List<Link> newEdges, List<Link> originalEdges) {
+
+        List<Link> newEdgesToAppend = new ArrayList<>();
+
+        for (Link newEdge: newEdges) {
+            boolean updateEdge = false;
+            for(int i=0; i<originalEdges.size(); i++){
+                if(newEdge.Source == originalEdges.get(i).Source && newEdge.Target == originalEdges.get(i).Target){
+                    updateEdge = true;
+                    originalEdges.get(i).setIsPath();
+                }
+
+                if(!updateEdge && newEdge.Target == originalEdges.get(i).Source && newEdge.Source == originalEdges.get(i).Target){
+                    updateEdge = true;
+                    originalEdges.get(i).setIsPath();
+                }
+            }
+
+            if(!updateEdge) {
+                newEdgesToAppend.add(newEdge);
+            }
+        }
+
+        originalEdges.addAll(newEdgesToAppend);
+
+        return originalEdges;
+    }
+
     public List<Link> generateChordPath(List<Link> edges, KeyMembers keyMembers) {
 
         Graph graph = new AdjacencyMatrixGraph(84, GraphType.UNDIRECTED);
