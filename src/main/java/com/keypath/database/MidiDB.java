@@ -22,7 +22,6 @@ public class MidiDB {
             FileWriter myWriter = new FileWriter(filePath + "/created.txt");
             myWriter.write(Long.toString((new Date()).getTime()));
             myWriter.close();
-            System.out.println("Successfully wrote to the created.txt file.");
         }
 
         return filePath;
@@ -46,7 +45,6 @@ public class MidiDB {
 
             for (File m : midiFiles) {
                 if(m.getName().contains("created")) {
-                    System.out.println("FILE: " + m.getName());
                     String content = FileUtils.readFileToString(m, StandardCharsets.UTF_8);
                     System.out.println(content);
 
@@ -57,7 +55,6 @@ public class MidiDB {
                     long diffMinutes = diff / (60 * 1000);
 
                     if(diffMinutes > 60) {
-                        System.out.println("WANT TO DELETE SESSION: " + f.getName());
                         FileUtils.deleteDirectory(f);
                     }
                 }
