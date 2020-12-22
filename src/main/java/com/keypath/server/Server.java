@@ -21,12 +21,12 @@ public class Server {
         return null;
     }
 
-    @GetMapping("/graph/{sessionid}")
-    RenderData get(@PathVariable("sessionid") String sessionId) {
+    @GetMapping("/graph/{sessionid}/{origin}/{destination}")
+    RenderData get(@PathVariable("sessionid") String sessionId, @PathVariable("origin") Integer origin, @PathVariable("destination") Integer destination) {
         ChordGraph chordGraph = new ChordGraph();
         RenderData renderData = null;
         try {
-            renderData = chordGraph.createGraph(sessionId);
+            renderData = chordGraph.createGraph(sessionId, origin, destination);
         } catch (IOException e) {
             e.printStackTrace();
         }

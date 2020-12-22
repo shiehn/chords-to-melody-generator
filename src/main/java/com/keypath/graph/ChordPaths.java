@@ -39,7 +39,17 @@ public class ChordPaths {
         return originalEdges;
     }
 
-    public List<Link> generateChordPath(List<Link> edges, KeyMembers keyMembers) {
+    public List<Link> generateChordPath(List<Link> edges, KeyMembers keyMembers, Integer originNodeId, Integer destinationNodeId) {
+
+        if(originNodeId == null) {
+            originNodeId = 0;
+        }
+
+        if(destinationNodeId == null) {
+            destinationNodeId = 83;
+        }
+
+        System.out.println(String.format("ORIGIN: %s, DESTINATION: %s ", originNodeId, destinationNodeId));
 
         Graph graph = new AdjacencyMatrixGraph(84, GraphType.UNDIRECTED);
         for (Link link : edges) {
@@ -47,7 +57,7 @@ public class ChordPaths {
             graph.addEdge(link.Source, link.Target);
         }
 
-        List<Integer> idPath = ShortestPathUnweighted.shortestPath(graph, 0, 83);
+        List<Integer> idPath = ShortestPathUnweighted.shortestPath(graph, originNodeId, destinationNodeId);
         //0    1    2     3
         //0 -> 1 -> 72 -> 70
         List<Link> chordPath = new ArrayList<>();

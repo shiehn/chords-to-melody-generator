@@ -29,20 +29,17 @@ public class ChordGraph {
         this.midiDB = new MidiDB();
     }
 
-    public RenderData createGraph(String sessionId) throws IOException {
-
+    public RenderData createGraph(String sessionId, Integer origin, Integer destination) throws IOException {
         System.out.println("0 KEY = " + this.keyMembers.getById(0).Key + " CHORD = " + this.keyMembers.getById(0).Chord);
         System.out.println("71 KEY = " + this.keyMembers.getById(70).Key + " CHORD = " + this.keyMembers.getById(70).Chord);
 
         List<Link> edges = this.chordEdges.createEdges(this.keyMembers.getKeyNoteMap());
 
-        List<Link> chordPath = this.chordPaths.generateChordPath(edges, this.keyMembers);
-
-        //List<Link> chordPath = new ArrayList<>();
+        List<Link> chordPath = this.chordPaths.generateChordPath(edges, this.keyMembers, origin, destination);
 
         edges = this.chordPaths.addOrUpdateChordPathLinks(chordPath, edges);
 
-        RenderData renderData = new RenderData(this.keyMembers.getAllKeys(), edges);
+        RenderData renderData = new RenderData(this.keyMembers.getAllKeys(), edges, origin, destination);
 
         System.out.println("************************************************************************");
         System.out.println("************************************************************************");
